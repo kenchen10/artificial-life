@@ -13,6 +13,7 @@ function draw() {
 }
 
 function mouseDragged() {
+	//create a new boid on mouse drag
 	let b = new Boid(mouseX, mouseY);
 	allBoids.push(b);
 }

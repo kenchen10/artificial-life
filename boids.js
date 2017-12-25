@@ -1,5 +1,7 @@
-//Boid class, describes flocking behavior of a single boid
+//Flocking algorithm described in 1986 paper by Craig Reynolds.
+
 class Boid {
+	//Boid class, describes flocking behavior of a single boid.
 	constructor(x, y) {
 		this.acceleration = createVector(0, 0)
 		this.velocity = createVector(random(-1, 1), random(-1, 1));
@@ -37,6 +39,7 @@ class Boid {
 	}
 
 	borders() {
+		//torus behavior of canvas
 		if (this.position.x < 0) {
 			this.position.x = windowWidth;
 		}
