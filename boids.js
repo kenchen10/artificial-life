@@ -1,3 +1,4 @@
+//Boid class, describes flocking behavior of a single boid
 class Boid {
 	constructor(x, y) {
 		this.acceleration = createVector(0, 0)
@@ -17,6 +18,7 @@ class Boid {
 	}
 
 	applyForce(force) {
+		//changes acceleration based on force enacted on boid
 		this.acceleration.add(force);
 	}
 
@@ -26,7 +28,7 @@ class Boid {
 			var v1 = this.rule1(allBoids);
 			var v2 = this.rule2(allBoids);
 			var v3 = this.rule3(allBoids);
-			v1.mult(1.5);			//Weight
+			v1.mult(1.5);	//Weight
 			//Add vectors from 3 rules to current boid velocity.
 			this.applyForce(v1);
 			this.applyForce(v2);
@@ -35,24 +37,26 @@ class Boid {
 
 	changePosition() {
 		//Updates boid position
-		this.velocity.add(this.acceleration);
-		this.velocity.limit(this.maxSpeed);
-		this.position.add(this.velocity);
-		this.acceleration.mult(0);
+		this.velocity.add(this.acceleration); //update velocity
+		this.velocity.limit(this.maxSpeed); //limit velocity
+		this.position.add(this.velocity); //update position
+		this.acceleration.mult(0); //make acceleration 0
 	}
 
 	seek(target) {
-		var desiredLoc = p5.Vector.sub(target, this.position);
+		//applies a steering force
+		var desiredLoc = p5.Vector.sub(target, this.position); //vector from position to target
 
-		desiredLoc.normalize();
+		desiredLoc.normalize(); //normalize/scale desired
 		desiredLoc.mult(this.maxSpeed);
-
+		//steer = desired - velocity
 		var steer = p5.Vector.sub(desiredLoc, this.velocity);
 		steer.limit(this.maxForce);
 		return steer
 	}
 
 	display() {
+		//draws each boid at its current position
 		fill(175);
 		stroke(0);
 		ellipse(this.position.x, this.position.y, 10, 10);
@@ -85,7 +89,7 @@ class Boid {
 		//other boids).
 		var c = createVector(0, 0);
 		var count = 0;
-
+		//check distance from each boid between boids
 		for (let b of allBoids) {
 			var d = p5.Vector.dist(this.position, b.position)
 			if ((d > 0) && (d < this.sepDist)) {
@@ -97,9 +101,11 @@ class Boid {
 			}
 		}
 		if (count > 0) {
+			//average
 			c.div(count);
 		}
 		if (c.mag() > 0) {
+			//steer = desired - velocity
 			c.normalize();
 			c.mult(this.maxSpeed);
 			c.sub(this.velocity);
