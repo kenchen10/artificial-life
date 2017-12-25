@@ -9,7 +9,6 @@ function draw() {
 	for (let b of allBoids) {
 		b.run(allBoids);
 	}
-
 	fill(0);
 }
 
