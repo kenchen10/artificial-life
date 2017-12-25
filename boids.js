@@ -6,7 +6,7 @@ class Boid {
 		this.position = createVector(x, y);
 
 		this.maxSpeed = 3.0;
-		this.maxForce = 0.05;
+		this.maxForce = 0.03;
 		this.sepDist = 25.0;
 	}
 
@@ -14,6 +14,7 @@ class Boid {
 		//runs the whole thing
 			this.move(allBoids);
 			this.changePosition();
+			this.borders();
 			this.display();
 	}
 
@@ -33,6 +34,21 @@ class Boid {
 			this.applyForce(v1);
 			this.applyForce(v2);
 			this.applyForce(v3);
+	}
+
+	borders() {
+		if (this.position.x < 0) {
+			this.position.x = windowWidth;
+		}
+		if (this.position.x > windowWidth) {
+			this.position.x = 0;
+		}
+		if (this.position.y < 0) {
+			this.position.y = windowHeight;
+		}
+		if (this.position.y > windowHeight) {
+			this.position.y = 0;
+		}
 	}
 
 	changePosition() {
