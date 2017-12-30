@@ -62,7 +62,7 @@ class Boid {
 		this.acceleration.mult(0); //make acceleration 0
 	}
 
-	seek(target) {
+	steer(target) {
 		//applies a steering force
 		var desiredLoc = p5.Vector.sub(target, this.position); //vector from position to target
 
@@ -96,7 +96,7 @@ class Boid {
 		}
 		if (count > 0) {
 			pc_j.div(count);
-			return this.seek(pc_j);
+			return this.steer(pc_j);
 		}
 		else {
 			return createVector(0, 0);
