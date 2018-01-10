@@ -1,5 +1,9 @@
 var allBoids = [];
 
+function preload() {
+	img = loadImage('images/frame_0');
+}
+
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 }

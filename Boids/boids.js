@@ -76,9 +76,7 @@ class Boid {
 
 	display() {
 		//draws each boid at its current position
-		fill(175);
-		stroke(0);
-		ellipse(this.position.x, this.position.y, 10, 10);
+		image(img, this.position.x, this.position.y);
 	}
 
 	rule1(allBoids) {
