@@ -8,8 +8,9 @@ class Boid {
 		this.position = createVector(x, y);
 
 		this.maxSpeed = 3.0;
-		this.maxForce = 0.03;
-		this.sepDist = 25.0;
+		this.maxForce = .05;
+		this.sepDist = 200.0;
+		this.vision = 600;
 	}
 
 	run(allBoids) {
@@ -31,11 +32,16 @@ class Boid {
 			var v1 = this.rule1(allBoids);
 			var v2 = this.rule2(allBoids);
 			var v3 = this.rule3(allBoids);
-			v1.mult(1.5);	//Weight
+			var v4 = this.rule4(allBoids);
+			v1.mult(.9);	//Weight
+			v2.mult(2);	//Weight
+			v3.mult(1);	//Weight
+			v4.mult(2);	//Weight
 			//Add vectors from 3 rules to current boid velocity.
 			this.applyForce(v1);
 			this.applyForce(v2);
 			this.applyForce(v3);
+			this.applyForce(v4);
 	}
 
 	borders() {
@@ -62,7 +68,7 @@ class Boid {
 		this.acceleration.mult(0); //make acceleration 0
 	}
 
-	steer(target) {
+	seek(target) {
 		//applies a steering force
 		var desiredLoc = p5.Vector.sub(target, this.position); //vector from position to target
 
@@ -71,30 +77,36 @@ class Boid {
 		//steer = desired - velocity
 		var steer = p5.Vector.sub(desiredLoc, this.velocity);
 		steer.limit(this.maxForce);
-		return steer
+		return steer;
 	}
 
-	display() {
-		//draws each boid at its current position
-		image(img, this.position.x, this.position.y);
+	display(allBoids) {
+		var angle = this.velocity.heading() + radians(90);
+		fill(this.velocity.mag() * 100, 66, 78);
+		push();
+	  translate(this.position.x,this.position.y);
+	  rotate(angle);
+	  beginShape();
+	  ellipse(0, 0, 10, 20);
+	  endShape(CLOSE);
+	  pop();
 	}
 
 	rule1(allBoids) {
 		//Boids try to fly towards the center of mass of neighboring boids.
-		var neighboringDist = 50;
 		var pc_j = createVector(0, 0);
 		var count = 0;
 
 		for (let b of allBoids) {
 			var d = p5.Vector.dist(this.position, b.position);
-			if ((d > 0) && (d < neighboringDist)) {
+			if ((d > 0) && (d < this.vision)) {
 				pc_j.add(b.position);
 				count++;
 			}
 		}
 		if (count > 0) {
 			pc_j.div(count);
-			return this.steer(pc_j);
+			return this.seek(pc_j);
 		}
 		else {
 			return createVector(0, 0);
@@ -135,11 +147,10 @@ class Boid {
 		//Boids try to match velocity with nearby boids.
 		var pv_j = createVector(0, 0);
 		var count = 0;
-		var neighboringDist = 50;
 
 		for (let b of allBoids) {
 			var d = p5.Vector.dist(this.position, b.position)
-			if ((d > 0) && (d < neighboringDist)) {
+			if ((d > 0) && (d < this.vision)) {
 				pv_j.add(b.velocity);
 				count++;
 			}
@@ -151,6 +162,17 @@ class Boid {
 			var steer = p5.Vector.sub(pv_j, this.velocity);
 			steer.limit(this.maxForce);
 			return steer;
+		}
+		else {
+			return createVector(0, 0);
+		}
+	}
+
+	rule4(allBoids) {
+		//mouse force
+		var mousePos = createVector(mouseX, mouseY);
+		if (p5.Vector.dist(mousePos, this.position) < this.vision) {
+			return this.seek(mousePos);
 		}
 		else {
 			return createVector(0, 0);
