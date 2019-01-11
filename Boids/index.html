@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-128027772-1"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-128027772-1');
+	</script>
 	<link rel="icon" href="/favicons/favicon.ico">
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,20 +21,82 @@
 	<script src="libraries/p5.dom.js"></script>
 	<!--<script src="libraries/p5.sound.js"></script>-->
 	<script src="sketch.js"></script>
+	<script src="obstacle.js"></script>
 	<script src="boids.js"></script>
+	<script src="libraries/quicksettings.js"></script>
+	<script src="libraries/p5.gui.js"></script>
+	<script src="qtree.js"></script>
 
 
 	<style>
 		body {
-			margin:0;
-			padding:0;
+			margin: 0;
+			padding: 0;
 			overflow: hidden;
 		}
+
 		canvas {
-			margin:auto;
+			margin: auto;
 		}
+
+		@font-face {
+		  font-family: myFirstFont;
+		  src: url(/fonts/SourceSansPro-ExtraLight.otf);
+		}
+
+		input[type=range] {
+		  -webkit-appearance: none;
+			appearance: none;
+			height: 5px; /* Specified height */
+			background: #d3d3d3; /* Grey background */
+			outline: none; /* Remove outline */
+			opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+			-webkit-transition: .2s; /* 0.2 seconds transition on hover */
+			transition: opacity .2s;
+		}
+		input[type=range]:hover {
+			opacity: 1; /* Fully shown on mouse-over */
+		}
+
+		input[type=range]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: #9FA8DA;
+			cursor: pointer;
+		}
+
+		button {
+	    display: inline-block;
+	    border: none;
+	    padding: .5rem 1rem;
+	    margin: 0;
+	    text-decoration: none;
+	    background: #9FA8DA;
+	    color: #ffffff;
+	    font-family: myFirstFont;
+	    font-size: .7rem;
+	    cursor: pointer;
+	    text-align: center;
+	    transition: background 250ms ease-in-out,
+	                transform 150ms ease;
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+			border-radius: 2px;
+		}
+
+		button:hover,
+		button:focus {
+		  background: #7986CB;
+		}
+
+
 	</style>
 </head>
+
 <body>
 </body>
+
 </html>
